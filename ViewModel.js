@@ -1,4 +1,4 @@
-class ViewModel {
+export default  class ViewModel {
 	constructor() {
 		console.log('initialize ViewModel class');
 		this.controller = new Controller();
@@ -8,4 +8,3 @@ class ViewModel {
 	// Method which initialaize empty state UI
 	} 
 }
-
