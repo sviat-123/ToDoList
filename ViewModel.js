@@ -1,7 +1,9 @@
+import Controller from "./Controller.js";
+
 export default class ViewModel {
 	constructor() {
 		console.log('initialize ViewModel class');
-		//this.controller = new Controller();
+		this.controller = new Controller();
 	}
 	
 	init() {
