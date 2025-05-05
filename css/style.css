@@ -1,0 +1,35 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.Main{
+  background-color: #111727;
+}
+.ToDoList{
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100px;
+}
+.ModalOpenBtn{
+  margin: 0 auto;
+  padding-top: 50px;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  background-color: #5d5cde;
+}
+.ModalOpenBtn:hover{
+  background-color: #313199;
+}
+.ModalOpenButtonText{
+  
+  color: #fff;
+}
+.ModalOpenButtonIcon{
+  width: 30px;
+  margin-right: 5px;
+}
