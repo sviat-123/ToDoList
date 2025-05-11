@@ -3,37 +3,37 @@ import Controller from "./Controller.js";
 export default class ViewModel {
 	constructor() {
 		console.log('initialize ViewModel class');
-		this.Main = document.createElement('div');
-		this.ToDoList = document.createElement('div');
-		this.ModalOpenButton = document.createElement('button');
-		this.ModalOpenButtonText = document.createElement('span');
-		this.ModalOpenButtonIcon = document.createElement('img');
+		this.main = document.createElement('div');
+		this.toDoList = document.createElement('div');
+		this.modalOpenButton = document.createElement('button');
+		this.modalOpenButtonText = document.createElement('span');
+		this.modalOpenButtonIcon = document.createElement('img');
 
 		this.controller = new Controller();
 	}
 	
-	DisplayTodoList() {
-		this.Main.className = 'Main';
-		this.Main.id = 'Main';
-		document.body.prepend(this.Main);
+	displayTodoList() {
+		this.main.className = 'main';
+		this.main.id = 'main';
+		document.body.prepend(this.main);
 
-		this.ToDoList.className = 'ToDoList';
-		this.ToDoList.id = 'ToDolist';
-		this.Main.prepend(this.ToDoList);
+		this.toDoList.className = 'toDoList';
+		this.toDoList.id = 'toDolist';
+		this.main.prepend(this.toDoList);
 
-		this.ModalOpenButton.className = 'ModalOpenBtn';
-		this.ModalOpenButton.id = 'ModalOpenBtn';
-		this.ToDoList.prepend(this.ModalOpenButton);
+		this.modalOpenButton.className = 'modalOpenBtn';
+		this.modalOpenButton.id = 'modalOpenBtn';
+		this.toDoList.prepend(this.modalOpenButton);
 
-		this.ModalOpenButtonText.className = 'ModalOpenButtonText';
-		this.ModalOpenButtonText.id = 'ModalOpenButtonText';
-		this.ModalOpenButtonText.textContent = 'Add Todo';
-		this.ModalOpenButton.prepend(this.ModalOpenButtonText);
+		this.modalOpenButtonText.className = 'modalOpenButtonText';
+		this.modalOpenButtonText.id = 'modalOpenButtonText';
+		this.modalOpenButtonText.textContent = 'Add Todo';
+		this.modalOpenButton.prepend(this.modalOpenButtonText);
 
-		this.ModalOpenButtonIcon.className = 'ModalOpenButtonIcon';
-		this.ModalOpenButtonIcon.id = 'ModalOpenButtonIcon';
-		this.ModalOpenButtonIcon.src = './icon/plus_icon.svg';
-		this.ModalOpenButton.prepend(this.ModalOpenButtonIcon);
+		this.modalOpenButtonIcon.className = 'modalOpenButtonIcon';
+		this.modalOpenButtonIcon.id = 'modalOpenButtonIcon';
+		this.modalOpenButtonIcon.src = './icon/plus_icon.svg';
+		this.modalOpenButton.prepend(this.modalOpenButtonIcon);
 
 
 
@@ -41,5 +41,6 @@ export default class ViewModel {
 	}
 	init() {
 	// Method which initialaize empty state UI
+		this.displayTodoList();
 	} 
 }

@@ -2,17 +2,17 @@
   margin: 0;
   padding: 0;
 }
-.Main{
+.main{
   background-color: #111727;
 }
-.ToDoList{
+.toDoList{
   display: flex;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
   height: 100px;
 }
-.ModalOpenBtn{
+.modalOpenBtn{
   margin: 0 auto;
   padding-top: 50px;
   display: flex;
@@ -22,14 +22,14 @@
   border: none;
   background-color: #5d5cde;
 }
-.ModalOpenBtn:hover{
+.modalOpenBtn:hover{
   background-color: #313199;
 }
-.ModalOpenButtonText{
+.modalOpenButtonText{
   
   color: #fff;
 }
-.ModalOpenButtonIcon{
+.modalOpenButtonIcon{
   width: 30px;
   margin-right: 5px;
 }
