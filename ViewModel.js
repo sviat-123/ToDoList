@@ -8,7 +8,7 @@ export default class ViewModel {
 
 		this.main = document.createElement('div');
 		this.toDoList = document.createElement('div');
-		this.modalOpenButton = document.createElement('button');
+		this.modalOpenButtonAddTask = document.createElement('button');
 		this.modalOpenButtonText = document.createElement('span');
 		this.modalOpenButtonIcon = document.createElement('img');
 		
@@ -38,19 +38,19 @@ export default class ViewModel {
 		this.toDoList.id = 'toDolist';
 		this.main.prepend(this.toDoList);
 
-		this.modalOpenButton.className = 'button-open-modal';
-		this.modalOpenButton.id = 'button-open-modal';
-		this.toDoList.prepend(this.modalOpenButton);
+		this.modalOpenButtonAddTask.className = 'button-open-modal';
+		this.modalOpenButtonAddTask.id = 'button-open-modal';
+		this.toDoList.prepend(this.modalOpenButtonAddTask);
 
 		this.modalOpenButtonText.className = 'button-open-modal__text';
 		this.modalOpenButtonText.id = 'button-open-modal__text';
 		this.modalOpenButtonText.textContent = 'Add Todo';
-		this.modalOpenButton.prepend(this.modalOpenButtonText);
+		this.modalOpenButtonAddTask.prepend(this.modalOpenButtonText);
 
 		this.modalOpenButtonIcon.className = 'button-open-modal__icon';
 		this.modalOpenButtonIcon.id = 'button-open-modal__icon';
 		this.modalOpenButtonIcon.src = './icon/plus_icon.svg';
-		this.modalOpenButton.prepend(this.modalOpenButtonIcon);
+		this.modalOpenButtonAddTask.prepend(this.modalOpenButtonIcon);
 	}
 
 	displayModalWindow(){
@@ -114,11 +114,21 @@ export default class ViewModel {
 		this.modalFooter.append(this.modalSubmitButton);
 	}
 
+	openModalWindow(){
+		// add task 
+		this.modalOpenButtonAddTask.addEventListener('click', () =>{
+			this.displayModalWindow();
+		});
+		// edit task
+		// this.modalOpenButtonEditTask.addEventListener('click', () =>{
+		// 	this.displayModalWindow();
+		// });
+	}
 
 
 	init() {
 	// Method which initialaize empty state UI
 		this.displayTodoList();
-		this.displayModalWindow();
+		this.openModalWindow();
 	} 
 }
