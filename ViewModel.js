@@ -5,7 +5,7 @@ export default class ViewModel {
 		console.log('initialize ViewModel class');
 		this.controller = new Controller();
 
-
+		//initializing todolist
 		this.main = document.createElement('div');
 		this.toDoList = document.createElement('div');
 		this.modalOpenButtonAddTask = document.createElement('button');
@@ -27,7 +27,6 @@ export default class ViewModel {
 		this.modalCancelButton = document.createElement('button');
 		this.modalSubmitButton = document.createElement('button');
 	}
-	
 	
 	displayTodoList() {
 		this.main.className = 'main';
@@ -125,6 +124,14 @@ export default class ViewModel {
 		// });
 	}
 
+	CloseOrCancelModalWindow(){
+	this.modalCloseButton.addEventLisner('click', () =>{
+		// this.removeModalWindow();
+	});
+	this.modalCancelButton.addEventListener('click', () =>{
+		// this.removeModalWindow()
+	});
+	}
 
 	init() {
 	// Method which initialaize empty state UI
