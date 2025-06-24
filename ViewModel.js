@@ -124,12 +124,16 @@ export default class ViewModel {
 		// });
 	}
 
-	CloseOrCancelModalWindow(){
-	this.modalCloseButton.addEventLisner('click', () =>{
-		// this.removeModalWindow();
+	removeModalWindow(){
+		this.modal.remove();
+	}
+
+	closeOrCancelModalWindow(){
+	this.modalCloseButton.addEventListener('click', () =>{
+		this.removeModalWindow();
 	});
 	this.modalCancelButton.addEventListener('click', () =>{
-		// this.removeModalWindow()
+		this.removeModalWindow();
 	});
 	}
 
@@ -137,5 +141,6 @@ export default class ViewModel {
 	// Method which initialaize empty state UI
 		this.displayTodoList();
 		this.openModalWindow();
+		this.closeOrCancelModalWindow();
 	} 
 }
