@@ -148,36 +148,16 @@ export default class ViewModel {
 	});
 	}
 	
+	// обработчик по клику, записываем состояние, update form state by error
 	submit(){
-		this.modalSubmitButton.addEventListener('click', ()=>{
-			this.todos = [];
-			if (this.modalInput.value === '') {
-				this.modalInput.classList.add('error');
-				this.modalInput.placeholder = 'Error';
-      } else {
-				this.todo = {
-					id: Date.now(),
-					title: this.modalInput.value, 
-					DescriptionOptional: this.modalTextArea.value,
-					complete: false
-				};
-				this.todos.push(this.todo);
-
-				//this.save();
-				//this.displayTasks();
-				// method for displaying table and tasks
-				this.modalInput.classList.remove('error');
-				this.removeModalWindow();
-      }
+		this.isClickBtn = false;
+		this.modalSubmitButton.addEventListener('click', () =>{
+			this.controller.validateTextField(this.modalInput, this.modalTextArea);
+			//displayTasks();
 		});
-		this.modalInput.value = '';
 	}
 
 	/*displayTasks(){
-
-}*/
-
-	/*saveInLocalStorage(){
 
 }*/
 
