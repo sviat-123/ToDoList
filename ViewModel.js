@@ -154,6 +154,7 @@ export default class ViewModel {
 		this.modalSubmitButton.addEventListener('click', () =>{
 			this.controller.validateTextField(this.modalInput, this.modalTextArea);
 			//displayTasks();
+			this.removeModalWindow();
 		});
 	}
 
