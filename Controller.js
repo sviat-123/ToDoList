@@ -4,17 +4,17 @@ export default class Controller {
 	constructor() {
 		console.log('initialize Controller class');
     this.storageService = new Storage();
-
+		
 	}
 	//валидация поля, ошибка валидации, доступ,  получения обновленного текста 
 
 	validateTextField(modalInput, modalTextArea){
+		this.errorEmptyField = true;
 		if(modalInput.value === ''){
-			modalInput.placeholder = 'Required fields';
-			modalInput.classList.add('error');
-
+			this.errorEmptyField = false;
 		} else {
 			this.storageService.saveTasks(modalInput.value, modalTextArea.value);
 		}
+		return this.errorEmptyField;
 	}
 }

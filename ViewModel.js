@@ -152,9 +152,15 @@ export default class ViewModel {
 	submit(){
 		this.isClickBtn = false;
 		this.modalSubmitButton.addEventListener('click', () =>{
-			this.controller.validateTextField(this.modalInput, this.modalTextArea);
+			this.newError = this.controller.validateTextField(this.modalInput, this.modalTextArea);
+			if(!this.newError){
+				this.modalInput.placeholder = 'the field must not be empty';
+				this.modalInput.classList.add('error'); 
+			} else{
+				this.removeModalWindow();
+			}
 			//displayTasks();
-			this.removeModalWindow();
+			
 		});
 	}
 
