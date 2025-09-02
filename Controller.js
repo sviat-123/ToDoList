@@ -9,12 +9,11 @@ export default class Controller {
 	//валидация поля, ошибка валидации, доступ,  получения обновленного текста 
 
 	validateTextField(modalInput, modalTextArea){
-		this.errorEmptyField = true;
 		if(modalInput.value === ''){
-			this.errorEmptyField = false;
+			throw new Error('Поле не должно быть пустым');
 		} else {
 			this.storageService.saveTasks(modalInput.value, modalTextArea.value);
 		}
-		return this.errorEmptyField;
+		return true;
 	}
 }
