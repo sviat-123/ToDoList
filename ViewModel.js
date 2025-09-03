@@ -137,6 +137,26 @@ export default class ViewModel {
 	});
 	}
 
+	
+	// обработчик по клику, записываем состояние, update form state by error
+	submit(){
+		this.modalSubmitButton.addEventListener('click', () =>{
+			try{
+				this.controller.validateTextField(this.modalInput, this.modalTextArea);
+				this.removeModalWindow();
+			} catch (error){
+				console.error(error.message);
+				this.modalInput.placeholder = 'the field must not be empty';
+				this.modalInput.classList.add('error');
+			}
+			//displayTasks();
+		});
+	}
+
+	/*displayTasks(){
+
+}*/
+
 	init() {
 	// Method which initialaize empty state UI
 		this.displayTodoList();
