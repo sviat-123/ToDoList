@@ -6,8 +6,8 @@ export default class Controller {
     this.storageService = new Storage();
 		
 	}
-	//валидация поля, ошибка валидации, доступ,  получения обновленного текста 
-
+	
+	//валидация поля, ошибка валидации, доступ, получения обновленного текста 
 	validateTextField(modalInput, modalTextArea){
 		if(modalInput.value === ''){
 			throw new Error('Поле не должно быть пустым');

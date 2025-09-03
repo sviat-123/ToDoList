@@ -14,8 +14,4 @@ export default class Storoge {
 			console.log(this.tasks);
 			localStorage.setItem('allTasks', JSON.stringify(this.tasks)) 
 		};
-		showTasks(){
-			
-		}
-
 }

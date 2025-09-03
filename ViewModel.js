@@ -150,7 +150,6 @@ export default class ViewModel {
 	
 	// обработчик по клику, записываем состояние, update form state by error
 	submit(){
-		this.isClickBtn = false;
 		this.modalSubmitButton.addEventListener('click', () =>{
 			try{
 				this.controller.validateTextField(this.modalInput, this.modalTextArea);
