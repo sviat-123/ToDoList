@@ -13,13 +13,19 @@ body{
 }
 .toDoList{
   display: flex;
+  flex-direction: column;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  height: 100px;
+}
+.to-Do-List__title{
+  margin: 50px 0;
+  font-weight: 700;
+  font-size: 32px;
+  color: #fff;
 }
 .button-open-modal{
-  margin: 0 auto;
+  margin: 0 auto 50px;
   padding-top: 50px;
   display: flex;
   align-items: center;
@@ -38,6 +44,10 @@ body{
   width: 30px;
   margin-right: 5px;
 }
+.task__list{
+  
+}
+
 
 .modal{ 
   position: fixed;
