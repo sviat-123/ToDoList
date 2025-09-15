@@ -2,11 +2,9 @@
   margin: 0;
   padding: 0;
 }
-html{
-  scrollbar-gutter: stable;
-}
-body{
-  scrollbar-gutter: stable;
+html, body {
+  width: 100%;
+  height: 100%;
 }
 .main{
   background-color: #111727;
@@ -45,8 +43,30 @@ body{
   margin-right: 5px;
 }
 .task__list{
-  
+  width: 55%;
 }
+.task{ 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  height: 45px;
+  background-color: #1e2938; 
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 0 5px;
+}
+.task-checkbox{}
+.title-task{}
+.textDescription-task{}
+.edit-button,
+.delete-button{
+  background: none;
+  border: none;
+}
+.edit-icon,
+.delet-icon{}
+
 
 
 .modal{ 

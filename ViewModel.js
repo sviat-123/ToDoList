@@ -30,12 +30,8 @@ export default class ViewModel {
 
 		//initializing tasks
 		this.taskList = document.createElement('ul');
-		this.task = document.createElement('li');
-		this.taskCheckBox = document.createElement('input');
-		this.taskTittle = document.createElement('p');
-		this.taskSubtitle = document.createElement('p');
-		this.taskEditButton = document.createElement('button');
-		this.taskDeleteButton = document.createElement('button');
+
+		this.counter = 1;
 
 		//state of one window
 		this.isModalOpen = false;
@@ -66,7 +62,7 @@ export default class ViewModel {
 
 		this.modalOpenButtonIcon.classList.add('button-open-modal__icon');
 		this.modalOpenButtonIcon.id = 'button-open-modal__icon';
-		this.modalOpenButtonIcon.src = './icon/plus_icon.svg';
+		this.modalOpenButtonIcon.src = './icon/plus.svg';
 		this.modalOpenButtonAddTask.prepend(this.modalOpenButtonIcon);
 
 		this.taskList.classList.add('task__list');
@@ -181,6 +177,7 @@ export default class ViewModel {
 			try{
 				this.controller.validateTextField(this.modalInput, this.modalTextArea);
 				this.removeModalWindow();
+				
 			} catch (error){
 				console.error(error.message);
 				this.modalInput.placeholder = 'the field must not be empty';
@@ -191,29 +188,62 @@ export default class ViewModel {
 	}
 
 	displayTaskList(){
-		this.task.classList.add('createElement');
-		this.task.id = 'taskItem';
-		this.taskList.prepend(this.task);
 
-		this.taskCheckBox.classList.add('task-checkbox');
-		this.taskCheckBox.id = 'checkbox';
-		this.task.prepend(this.taskCheckBox);
+		const task = document.createElement('li');
+		const taskCheckBox = document.createElement('input');
+		const taskBlockInfo = document.createElement('div');
+		const taskTittle = document.createElement('p');
+		const taskSubtitle = document.createElement('p');
+		const taskBlockBtn = document.createElement('div');
+		const taskEditButton = document.createElement('button');
+		const taskEditButtonIcon = document.createElement('img')
+		const taskDeleteButton = document.createElement('button');
+		const taskDeleteButtonIcon = document.createElement('img');
+		
+		task.classList.add('task');
+		task.id = 'taskItem';
+		taskList.prepend(task);
 
-		this.taskTittle.classList.add('title-task');
-		this.taskTittle.id = 'taskTitle';
-		this.taskCheckBox.prepend(this.taskTittle);
+		taskCheckBox.classList.add('task-checkbox');
+		taskCheckBox.id = 'checkbox';
+		taskCheckBox.type = 'checkbox';
+		task.append(taskCheckBox);
 
-		this.taskSubtitle.classList.add('textDescription-task');
-		this.taskSubtitle.id = 'taskDescription';
-		this.taskCheckBox.prepend(this.taskSubtitle);
+		taskBlockInfo.classList.add('task-info');
+		task.append(taskBlockInfo);
 
-		this.taskEditButton.classList.add('edit-button');
-		this.taskEditButton.id = 'editButton';
-		this.taskSubtitle.prepend(this.taskEditButton);
+		taskTittle.classList.add('title-task');
+		taskTittle.id = 'taskTitle';
+		taskTittle.textContent = this.modalInput.value; 
+		taskBlockInfo.append(taskTittle);
 
-		this.taskDeleteButton.classList.add('delete-button');
-		this.taskDeleteButton.id = 'deleteButton';
-		this.taskEditButton.prepend(this.taskDeleteButton);
+		taskSubtitle.classList.add('textDescription-task');
+		taskSubtitle.id = 'taskDescription';
+		taskSubtitle.textContent = this.modalTextArea.value;
+		taskBlockInfo.append(taskSubtitle);
+
+		taskBlockBtn.classList.add('task-btn');
+		task.append(taskBlockBtn);
+
+
+		taskEditButton.classList.add('edit-button');
+		taskEditButton.id = 'editButton';
+		taskEditButton.src = './icon/pencil.svg';
+		taskBlockBtn.append(taskEditButton);
+
+		taskEditButtonIcon.classList.add('edit-icon');
+		taskEditButtonIcon.src = './icon/pencil.svg';
+		taskEditButtonIcon.alt = 'Edit';
+		taskEditButton.prepend(taskEditButtonIcon)
+
+		taskDeleteButton.classList.add('delete-button');
+		taskDeleteButton.id = 'deleteButton';
+		taskBlockBtn.append(taskDeleteButton);
+
+		taskDeleteButtonIcon.classList.add('delet-icon');
+		taskDeleteButtonIcon.alt = 'Delete';
+		taskDeleteButtonIcon.src = './icon/trashcan.svg';
+		taskDeleteButton.prepend(taskDeleteButtonIcon);
 	}
 
 	init() {
