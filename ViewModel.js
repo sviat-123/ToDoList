@@ -154,6 +154,8 @@ export default class ViewModel {
 		this.modalInput.value = '';
 		this.modalTextArea.value = '';
 		this.isModalOpen = false;
+		this.modalInput.placeholder = '';
+		this.modalInput.classList.remove('error');
 		this.modal.remove();
 	}
 
@@ -177,18 +179,17 @@ export default class ViewModel {
 			try{
 				this.controller.validateTextField(this.modalInput, this.modalTextArea);
 				this.removeModalWindow();
-				
+				this.displayTaskList(this.modalInput, this.modalTextArea);
 			} catch (error){
 				console.error(error.message);
 				this.modalInput.placeholder = 'the field must not be empty';
 				this.modalInput.classList.add('error');
 			}
-			this.displayTaskList();
+			
 		});
 	}
 
 	displayTaskList(){
-
 		const task = document.createElement('li');
 		const taskCheckBox = document.createElement('input');
 		const taskBlockInfo = document.createElement('div');
@@ -202,7 +203,7 @@ export default class ViewModel {
 		
 		task.classList.add('task');
 		task.id = 'taskItem';
-		taskList.prepend(task);
+		this.taskList.prepend(task);
 
 		taskCheckBox.classList.add('task-checkbox');
 		taskCheckBox.id = 'checkbox';
@@ -214,17 +215,16 @@ export default class ViewModel {
 
 		taskTittle.classList.add('title-task');
 		taskTittle.id = 'taskTitle';
-		taskTittle.textContent = this.modalInput.value; 
+		taskTittle.textContent = this.task.title.value; 
 		taskBlockInfo.append(taskTittle);
 
 		taskSubtitle.classList.add('textDescription-task');
 		taskSubtitle.id = 'taskDescription';
-		taskSubtitle.textContent = this.modalTextArea.value;
+		taskSubtitle.textContent = modalTextArea.value;
 		taskBlockInfo.append(taskSubtitle);
 
 		taskBlockBtn.classList.add('task-btn');
 		task.append(taskBlockBtn);
-
 
 		taskEditButton.classList.add('edit-button');
 		taskEditButton.id = 'editButton';
@@ -245,6 +245,8 @@ export default class ViewModel {
 		taskDeleteButtonIcon.src = './icon/trashcan.svg';
 		taskDeleteButton.prepend(taskDeleteButtonIcon);
 	}
+
+
 
 	init() {
 	// Method which initialaize empty state UI

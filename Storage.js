@@ -1,9 +1,11 @@
-export default class Storoge {
+export default class Storage {
 	constructor() {
 		console.log('initialize Storage class');
 		this.tasks = [];
-	}
 
+
+	}
+	
 		//реализация сорханения 
 		saveTasks(madalInputValue, modalTextAreaValue){
 			this.task = {
