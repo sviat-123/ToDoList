@@ -30,11 +30,6 @@ export default class ViewModel {
 
 		//initializing tasks
 		this.taskList = document.createElement('ul');
-
-		this.counter = 1;
-
-		//state of one window
-		this.isModalOpen = false;
 	}
 	
 	displayTodoList() {
@@ -172,87 +167,81 @@ export default class ViewModel {
 	});
 	}
 	
-	// обработчик по клику, записываем состояние, update form state by error
 	submit(){
-		this.isClickBtn = false;
-		this.modalSubmitButton.addEventListener('click', () =>{
-			try{
-				this.controller.validateTextField(this.modalInput, this.modalTextArea);
+		this.modalSubmitButton.addEventListener('click', () => {
+			try {
+				const task = this.controller.validateTextField(this.modalInput, this.modalTextArea);
 				this.removeModalWindow();
-				this.displayTaskList(this.modalInput, this.modalTextArea);
-			} catch (error){
-				console.error(error.message);
-				this.modalInput.placeholder = 'the field must not be empty';
+				this.displayTaskList(task);
+			} catch (error) {
+				this.modalInput.placeholder = error.message;	
 				this.modalInput.classList.add('error');
 			}
-			
 		});
 	}
 
-	displayTaskList(){
-		const task = document.createElement('li');
-		const taskCheckBox = document.createElement('input');
+	displayTaskList(task) {
+		const taskItem = document.createElement('li');
 		const taskBlockInfo = document.createElement('div');
+		const taskCheckBox = document.createElement('input');
 		const taskTittle = document.createElement('p');
-		const taskSubtitle = document.createElement('p');
 		const taskBlockBtn = document.createElement('div');
 		const taskEditButton = document.createElement('button');
-		const taskEditButtonIcon = document.createElement('img')
+		const taskEditButtonIcon = document.createElement('img');
 		const taskDeleteButton = document.createElement('button');
 		const taskDeleteButtonIcon = document.createElement('img');
 		
-		task.classList.add('task');
-		task.id = 'taskItem';
-		this.taskList.prepend(task);
-
-		taskCheckBox.classList.add('task-checkbox');
-		taskCheckBox.id = 'checkbox';
-		taskCheckBox.type = 'checkbox';
-		task.append(taskCheckBox);
-
+		taskItem.classList.add('task');
+		taskItem.dataset.id = task.id;
+		this.taskList.prepend(taskItem);
+		
 		taskBlockInfo.classList.add('task-info');
-		task.append(taskBlockInfo);
-
+		taskItem.append(taskBlockInfo);
+		
+		taskCheckBox.classList.add('task-checkbox');
+		taskCheckBox.type = 'checkbox';
+		taskBlockInfo.append(taskCheckBox);
+		
 		taskTittle.classList.add('title-task');
-		taskTittle.id = 'taskTitle';
-		taskTittle.textContent = this.task.title.value; 
+		const [title, description] = task.value.split(' | ');
+		taskTittle.textContent = title;
 		taskBlockInfo.append(taskTittle);
-
-		taskSubtitle.classList.add('textDescription-task');
-		taskSubtitle.id = 'taskDescription';
-		taskSubtitle.textContent = modalTextArea.value;
-		taskBlockInfo.append(taskSubtitle);
-
+		
 		taskBlockBtn.classList.add('task-btn');
-		task.append(taskBlockBtn);
-
+		taskItem.append(taskBlockBtn);
+		
 		taskEditButton.classList.add('edit-button');
-		taskEditButton.id = 'editButton';
-		taskEditButton.src = './icon/pencil.svg';
+		taskEditButton.type = 'button';
 		taskBlockBtn.append(taskEditButton);
-
+		
 		taskEditButtonIcon.classList.add('edit-icon');
 		taskEditButtonIcon.src = './icon/pencil.svg';
 		taskEditButtonIcon.alt = 'Edit';
-		taskEditButton.prepend(taskEditButtonIcon)
-
+		taskEditButton.append(taskEditButtonIcon);
+		
 		taskDeleteButton.classList.add('delete-button');
-		taskDeleteButton.id = 'deleteButton';
+		taskDeleteButton.type = 'button';
 		taskBlockBtn.append(taskDeleteButton);
-
-		taskDeleteButtonIcon.classList.add('delet-icon');
-		taskDeleteButtonIcon.alt = 'Delete';
+		
+		taskDeleteButtonIcon.classList.add('delete-icon');
 		taskDeleteButtonIcon.src = './icon/trashcan.svg';
-		taskDeleteButton.prepend(taskDeleteButtonIcon);
+		taskDeleteButtonIcon.alt = 'Delete';
+		taskDeleteButton.append(taskDeleteButtonIcon);
 	}
 
-
+	refreshTaskList() {
+		const tasks = this.controller.getTasks();
+		this.taskList.innerHTML = '';
+		tasks.slice().reverse().forEach(task => {
+			this.displayTaskList(task);
+		});
+	}
 
 	init() {
-	// Method which initialaize empty state UI
 		this.displayTodoList();
 		this.openModalWindow();
 		this.closeOrCancelModalWindow();
 		this.submit();
+		this.refreshTaskList();
 	} 
 }

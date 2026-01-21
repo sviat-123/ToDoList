@@ -6,14 +6,30 @@ export default class Controller {
     this.storageService = new Storage();
 		
 	}
-	//валидация поля, ошибка валидации, доступ,  получения обновленного текста 
 
-	validateTextField(modalInput, modalTextArea){
-		if(modalInput.value === ''){
-			throw new Error('Поле не должно быть пустым');
+	validateTextField(modalInput, modalTextArea) {
+		if (modalInput.value.trim() === '') {
+			throw new Error('The field must not be empty');
 		} else {
-			this.storageService.saveTasks(modalInput.value, modalTextArea.value);
+			return this.storageService.createTask(
+				`${modalInput.value}${modalTextArea.value ? ' | ' + modalTextArea.value : ''}`
+			);
 		}
-		return true;
+	}
+
+	getTasks() {
+		return this.storageService.getTasks();
+	}
+
+	updateTask(id, newValue) {
+		return this.storageService.updateTask(id, newValue);
+	}
+
+	deleteTask(id) {
+		return this.storageService.deleteTask(id);
+	}
+
+	getTask(id) {
+		return this.storageService.getTask(id);
 	}
 }

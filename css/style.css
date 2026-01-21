@@ -50,22 +50,30 @@ html, body {
   justify-content: space-between;
   align-items: center;
   list-style: none;
-  height: 45px;
+  min-height: 50px;
   background-color: #1e2938; 
   border-radius: 10px;
   margin-bottom: 20px;
-  padding: 0 5px;
+  padding: 0 10px;
 }
-.task-checkbox{}
-.title-task{}
-.textDescription-task{}
+.task-info{
+  display: flex;
+  gap: 10px;
+}
+.title-task{
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff;
+}
 .edit-button,
 .delete-button{
   background: none;
   border: none;
 }
-.edit-icon,
-.delet-icon{}
 
 
 
