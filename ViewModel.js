@@ -33,11 +33,11 @@ export default class ViewModel {
 	}
 	
 	displayTodoList() {
-		this.main.classList = 'main';
+		this.main.className = 'main';
 		this.main.id = 'main';
 		document.body.prepend(this.main);
 
-		this.toDoList.classList = 'toDoList';
+		this.toDoList.className = 'toDoList';
 		this.toDoList.id = 'toDolist';
 		this.main.prepend(this.toDoList);
 
@@ -97,7 +97,7 @@ export default class ViewModel {
 
 		this.modalInput.classList.add('modal__input');
 		this.modalInput.id = 'taskModal__titleInput';
-		this.modalInput.placeholder = 'What needs to be done?';
+		this.modalInput.value = 'What needs to be done?';
 		this.modalBody.append(this.modalInput);
 
 		this.modalDescripton.classList.add('modal__description');
@@ -112,7 +112,7 @@ export default class ViewModel {
 
 		this.modalTextArea.classList.add('modal__teaxarea');
 		this.modalTextArea.id = 'taskModal__descriptionInput';
-		this.modalTextArea.placeholder = 'Add detailse...';
+		this.modalTextArea.value = 'Add detailse...';
 		this.modalDescripton.append(this.modalTextArea);
 
 		this.modalFooter.classList.add('modal__footer');
@@ -137,7 +137,6 @@ export default class ViewModel {
 		// add task 
 		this.modalOpenButtonAddTask.addEventListener('click', () =>{
 			this.displayModalWindow();
-			this.isModalOpen = true;
 		});
 		// edit task
 		// this.modalOpenButtonEditTask.addEventListener('click', () =>{
@@ -156,16 +155,13 @@ export default class ViewModel {
 
 	closeOrCancelModalWindow(){
 	this.modalCloseButton.addEventListener('click', () =>{
-		if(this.isModalOpen === true ){
-			this.removeModalWindow();
-		}
+		this.removeModalWindow();
 	});
 	this.modalCancelButton.addEventListener('click', () =>{
-		if(this.isModalOpen === true ){
-			this.removeModalWindow();
-		}
+		this.removeModalWindow();
 	});
 	}
+
 	
 	submit(){
 		this.modalSubmitButton.addEventListener('click', () => {
