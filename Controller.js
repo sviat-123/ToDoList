@@ -2,35 +2,38 @@ import Storage from './Storage.js'
 
 export default class Controller {
 	constructor() {
-		console.log('initialize Controller class');
+        this.storage = new Storage();
+    }
 
-    this.storageService = new Storage();
-		
-	}
+  validateTaskInput(titleInput, descTextarea) {
+    const title = titleInput.value.trim();
+    if (!title) {
+      return { ok: false, error: "Название задачи не может быть пустым" };
+    }
 
-	validateTextField(modalInput, modalTextArea) {
-		if (modalInput.value.trim() === '') {
-			throw new Error('The field must not be empty');
-		} else {
-			return this.storageService.createTask(
-				`${modalInput.value}${modalTextArea.value ? ' | ' + modalTextArea.value : ''}`
-			);
-		}
-	}
+    const description = descTextarea.value.trim();
+    const fullValue = description ? `${title} | ${description}` : title;
 
-	getTasks() {
-		return this.storageService.getTasks();
-	}
+    return { ok: true, value: fullValue };
+  }
 
-	updateTask(id, newValue) {
-		return this.storageService.updateTask(id, newValue);
-	}
+  createTask(fullValue) {
+    return this.storage.createTask(fullValue);
+  }
 
-	deleteTask(id) {
-		return this.storageService.deleteTask(id);
-	}
+  updateTask(id, fullValue) {
+    return this.storage.updateTask(id, fullValue);
+  }
 
-	getTask(id) {
-		return this.storageService.getTask(id);
-	}
+  deleteTask(id) {
+    return this.storage.deleteTask(id);
+  }
+
+  getAllTasks() {
+		return this.storage.getAllTasks();
+  }
+
+  getTask(id) {
+    return this.storage.getTaskById(id);
+  }
 }

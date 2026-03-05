@@ -4,16 +4,22 @@ export default class ViewModel {
 	constructor() {
 		console.log('initialize ViewModel class');
 		this.controller = new Controller();
+		this.isModalOpen = false;
+		this.currentEditTaskId = null;
+	}
 
-		//initializing todolist
+	//============ CREATING ELEMENTS ============
+	createMainStructure(){
 		this.main = document.createElement('div');
 		this.toDoList = document.createElement('div');
 		this.toDoListTitle = document.createElement('h1');
 		this.modalOpenButtonAddTask = document.createElement('button');
 		this.modalOpenButtonText = document.createElement('span');
 		this.modalOpenButtonIcon = document.createElement('img');
-		
-		//initializing a modal window
+		this.taskList = document.createElement('ul');
+	}
+
+	createModaltructure(){
 		this.modal = document.createElement('div');
 		this.modalHeader = document.createElement('div');
 		this.modalTitle = document.createElement('h1');
@@ -21,17 +27,34 @@ export default class ViewModel {
 		this.modalBody = document.createElement('div');
 		this.modalSubtitle_1 = document.createElement('h2');
 		this.modalInput = document.createElement('input');
-		this.modalDescripton = document.createElement('div');
+		this.modalDescription = document.createElement('div');
 		this.modalSubtitle_2= document.createElement('h2');
 		this.modalTextArea = document.createElement('textarea');
 		this.modalFooter = document.createElement('div');
 		this.modalCancelButton = document.createElement('button');
 		this.modalSubmitButton = document.createElement('button');
-
-		//initializing tasks
-		this.taskList = document.createElement('ul');
 	}
-	
+
+	// ============ НАСТРОЙКА СЛУШАТЕЛЕЙ ============
+	setupMainListeners(){
+		this.modalOpenButtonAddTask.addEventListener('click', () =>{
+			this.openModalWindow()
+		});
+	}
+
+	setupModalListeners(){
+		this.modalCloseButton.addEventListener('click', () => {
+			this.closeOrCancelModalWindow()
+		});
+		this.modalCancelButton.addEventListener('click', () => {
+			this.closeOrCancelModalWindow()
+		});
+		this.modalSubmitButton.addEventListener('click', () => {
+			this.sumbitOrSave()
+		})
+	}
+
+	//============ DISPLAY ============
 	displayTodoList() {
 		this.main.className = 'main';
 		this.main.id = 'main';
@@ -65,7 +88,8 @@ export default class ViewModel {
 		this.modalOpenButtonAddTask.after(this.taskList);
 	}
 
-	displayModalWindow(){
+	displayModalWindow(mode, task = null){
+		
 		this.modal.classList.add('modal');
 		this.modal.id = 'taskModal';
 		this.main.after(this.modal);
@@ -77,7 +101,7 @@ export default class ViewModel {
 
 		this.modalTitle.classList.add('modal__title');
 		this.modalTitle.id = 'taskModal__title';
-		this.modalTitle.textContent = 'Add Todo';
+		this.modalTitle.textContent = mode === 'add' ? 'Add Task' : 'Edit Task';
 		this.modalHeader.append(this.modalTitle);
 
 		this.modalCloseButton.classList.add('modal__button-close');
@@ -97,23 +121,23 @@ export default class ViewModel {
 
 		this.modalInput.classList.add('modal__input');
 		this.modalInput.id = 'taskModal__titleInput';
-		this.modalInput.value = 'What needs to be done?';
+		this.modalInput.placeholder = 'What needs to be done?';
 		this.modalBody.append(this.modalInput);
 
-		this.modalDescripton.classList.add('modal__description');
-		this.modalDescripton.classList.add('block');
-		this.modalDescripton.id = 'taskModal__description';
-		this.modal.append(this.modalDescripton);
+		this.modalDescription.classList.add('modal__description');
+		this.modalDescription.classList.add('block');
+		this.modalDescription.id = 'taskModal__description';
+		this.modal.append(this.modalDescription);
 
 		this.modalSubtitle_2.classList.add('modal__subtitle');
 		this.modalSubtitle_2.id = 'taskModal__subtitle_2';
 		this.modalSubtitle_2.textContent = 'Description (optional)'
-		this.modalDescripton.append(this.modalSubtitle_2);
+		this.modalDescription.append(this.modalSubtitle_2);
 
-		this.modalTextArea.classList.add('modal__teaxarea');
+		this.modalTextArea.classList.add('modal__textarea');
 		this.modalTextArea.id = 'taskModal__descriptionInput';
-		this.modalTextArea.value = 'Add detailse...';
-		this.modalDescripton.append(this.modalTextArea);
+		this.modalTextArea.placeholder = 'Add detailse...';
+		this.modalDescription.append(this.modalTextArea);
 
 		this.modalFooter.classList.add('modal__footer');
 		this.modalFooter.classList.add('block');
@@ -129,58 +153,62 @@ export default class ViewModel {
 		this.modalSubmitButton.classList.add('modal__button-submit');
 		this.modalSubmitButton.classList.add('modal__button');
 		this.modalSubmitButton.id = 'taskModal__submitButton';
-		this.modalSubmitButton.textContent = 'Submit';
+		this.modalSubmitButton.textContent = mode === 'add' ?  'Submit' : 'Save';
 		this.modalFooter.append(this.modalSubmitButton);
+
+		if(mode === 'edit' && task){
+			const [title, description = ''] = task.value.split(' | ');
+			this.modalInput.value = title;
+			this.modalTextArea.value = description;
+		}
 	}
 
+	// ============ MODAL WINDOW LOGIC ============
 	openModalWindow(){
-		// add task 
-		this.modalOpenButtonAddTask.addEventListener('click', () =>{
-			this.displayModalWindow();
-		});
-		// edit task
-		// this.modalOpenButtonEditTask.addEventListener('click', () =>{
-		// 	this.displayModalWindow();
-		// });
+		this.currentEditTaskId = null;
+		this.displayModalWindow('add');
+	}
+
+	closeOrCancelModalWindow(){
+		this.removeModalWindow();
 	}
 
 	removeModalWindow(){
 		this.modalInput.value = '';
 		this.modalTextArea.value = '';
 		this.isModalOpen = false;
-		this.modalInput.placeholder = '';
 		this.modalInput.classList.remove('error');
 		this.modal.remove();
 	}
 
-	closeOrCancelModalWindow(){
-	this.modalCloseButton.addEventListener('click', () =>{
-		this.removeModalWindow();
-	});
-	this.modalCancelButton.addEventListener('click', () =>{
-		this.removeModalWindow();
-	});
+	sumbitOrSave() {
+    try {
+        const validatedTask = this.controller.validateTaskInput(
+            this.modalInput,
+            this.modalTextArea
+        );
+
+        if (this.currentEditTaskId !== null) {
+            this.controller.updateTask(this.currentEditTaskId, validatedTask.value);
+        } else {
+            this.controller.createTask(validatedTask.value);   // ← вот здесь было главное упущение
+        }
+
+        this.removeModalWindow();
+        this.refreshTaskList();
+    } catch (error) {
+        this.modalInput.placeholder = error.message;
+        this.modalInput.classList.add('error');
+        this.modalInput.focus();
+    }
 	}
 
-	
-	submit(){
-		this.modalSubmitButton.addEventListener('click', () => {
-			try {
-				const task = this.controller.validateTextField(this.modalInput, this.modalTextArea);
-				this.removeModalWindow();
-				this.displayTaskList(task);
-			} catch (error) {
-				this.modalInput.placeholder = error.message;	
-				this.modalInput.classList.add('error');
-			}
-		});
-	}
-
+	// ============ WORKING WITH TASKS ============
 	displayTaskList(task) {
 		const taskItem = document.createElement('li');
 		const taskBlockInfo = document.createElement('div');
 		const taskCheckBox = document.createElement('input');
-		const taskTittle = document.createElement('p');
+		const taskTitle = document.createElement('p');
 		const taskBlockBtn = document.createElement('div');
 		const taskEditButton = document.createElement('button');
 		const taskEditButtonIcon = document.createElement('img');
@@ -198,10 +226,10 @@ export default class ViewModel {
 		taskCheckBox.type = 'checkbox';
 		taskBlockInfo.append(taskCheckBox);
 		
-		taskTittle.classList.add('title-task');
+		taskTitle.classList.add('title-task');
 		const [title, description] = task.value.split(' | ');
-		taskTittle.textContent = title;
-		taskBlockInfo.append(taskTittle);
+		taskTitle.textContent = title;
+		taskBlockInfo.append(taskTitle);
 		
 		taskBlockBtn.classList.add('task-btn');
 		taskItem.append(taskBlockBtn);
@@ -209,6 +237,10 @@ export default class ViewModel {
 		taskEditButton.classList.add('edit-button');
 		taskEditButton.type = 'button';
 		taskBlockBtn.append(taskEditButton);
+
+		taskEditButton.addEventListener('click', ()=>{
+			this.editTask(task.id)
+		})
 		
 		taskEditButtonIcon.classList.add('edit-icon');
 		taskEditButtonIcon.src = './icon/pencil.svg';
@@ -225,19 +257,35 @@ export default class ViewModel {
 		taskDeleteButton.append(taskDeleteButtonIcon);
 	}
 
+	editTask(taskId) {
+    this.currentEditTaskId = Number(taskId);
+    const task = this.controller.getTask(taskId);
+    if (task) {
+        this.displayModalWindow('edit', task);
+    } else {
+        console.error("Task not found for editing");
+    }
+}
 	refreshTaskList() {
-		const tasks = this.controller.getTasks();
+		const tasks = this.controller.getAllTasks();
 		this.taskList.innerHTML = '';
 		tasks.slice().reverse().forEach(task => {
 			this.displayTaskList(task);
 		});
 	}
 
+	// ============ INITIALIZATION ============
 	init() {
+		//creating a structure
+		this.createMainStructure();
+		this.createModaltructure();
+		
+		//display
 		this.displayTodoList();
-		this.openModalWindow();
-		this.closeOrCancelModalWindow();
-		this.submit();
 		this.refreshTaskList();
+
+		//setting up listeners
+		this.setupMainListeners();
+		this.setupModalListeners();
 	} 
 }
