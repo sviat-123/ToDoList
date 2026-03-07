@@ -9,7 +9,6 @@ export default class Storage {
         const data = localStorage.getItem('todos');
         if (data) {
             this.todos = JSON.parse(data);
-            // Находим самый большой id, чтобы новые задачи не пересекались
             if (this.todos.length > 0) {
                 this.nextId = Math.max(...this.todos.map(t => t.id)) + 1;
             }
@@ -48,5 +47,14 @@ export default class Storage {
         task.updatedAt = new Date().toISOString();
         this.saveTasks();
         return task;
+    }
+
+    deleteTask(id){
+    const taskIndex = this.todos.findIndex(task => task.id === Number(id));
+        if (taskIndex === -1) return null;
+        
+        const deletedTask = this.todos.splice(taskIndex, 1)[0];
+        this.saveTasks();
+        return deletedTask;
     }
 }

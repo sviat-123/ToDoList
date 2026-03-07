@@ -250,6 +250,10 @@ export default class ViewModel {
 		taskDeleteButton.classList.add('delete-button');
 		taskDeleteButton.type = 'button';
 		taskBlockBtn.append(taskDeleteButton);
+
+		taskDeleteButton.addEventListener('click', ()=>{
+			this.deleteTask(task.id)
+		})
 		
 		taskDeleteButtonIcon.classList.add('delete-icon');
 		taskDeleteButtonIcon.src = './icon/trashcan.svg';
@@ -266,6 +270,12 @@ export default class ViewModel {
         console.error("Task not found for editing");
     }
 }
+
+	deleteTask(taskId){
+		this.controller.deleteTask(taskId)
+		this.refreshTaskList();
+	}
+
 	refreshTaskList() {
 		const tasks = this.controller.getAllTasks();
 		this.taskList.innerHTML = '';
