@@ -24,13 +24,14 @@ export default class Storage {
     }
 
     getTaskById(id) {
-        return this.todos.find(task => task.id === Number(id));
+        return this.todos.find(task => task.id === id);
     }
 
-    createTask(value) {
+    createTask(title, description) {
         const newTask = {
             id: this.nextId++,
-            value: value.trim(),
+            title: title.trim(),
+            description: description.trim(),
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
@@ -39,18 +40,19 @@ export default class Storage {
         return newTask;
     }
 
-    updateTask(id, newValue) {
+    updateTask(id, title, description) {
         const task = this.getTaskById(id);
         if (!task) return null;
 
-        task.value = newValue.trim();
+        task.title = title.trim();
+        task.description = description.trim();
         task.updatedAt = new Date().toISOString();
         this.saveTasks();
         return task;
     }
 
     deleteTask(id){
-    const taskIndex = this.todos.findIndex(task => task.id === Number(id));
+    const taskIndex = this.todos.findIndex(task => task.id === id);
         if (taskIndex === -1) return null;
         
         const deletedTask = this.todos.splice(taskIndex, 1)[0];

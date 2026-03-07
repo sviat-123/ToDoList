@@ -7,26 +7,23 @@ export default class Controller {
 
   validateTaskInput(titleInput, descTextarea) {
     const title = titleInput.value.trim();
-    if (!title) {
-      return { ok: false, error: "Название задачи не может быть пустым" };
-    }
-
     const description = descTextarea.value.trim();
-    const fullValue = description ? `${title} | ${description}` : title;
-
-    return { ok: true, value: fullValue };
+    if (!title) {
+      throw new Error("Название задачи не может быть пустым");
+    }
+    return { title, description };
   }
 
-  createTask(fullValue) {
-    return this.storage.createTask(fullValue);
+  createTask(titleValue, descriptionValue) {
+    return this.storage.createTask(titleValue, descriptionValue);
   }
 
-  updateTask(id, fullValue) {
-    return this.storage.updateTask(id, fullValue);
+  updateTask(id, titleValue, descriptionValue) {
+    return this.storage.updateTask(Number(id), titleValue, descriptionValue);
   }
 
   deleteTask(id) {
-    return this.storage.deleteTask(id);
+    return this.storage.deleteTask(Number(id));
   }
 
   getAllTasks() {
@@ -34,6 +31,6 @@ export default class Controller {
   }
 
   getTask(id) {
-    return this.storage.getTaskById(id);
+    return this.storage.getTaskById(Number(id));
   }
 }
