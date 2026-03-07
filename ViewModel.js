@@ -169,6 +169,9 @@ export default class ViewModel {
 
 	// ============ MODAL WINDOW LOGIC ============
 	openModalWindow(){
+		if (this.isModalOpen) {
+      return;
+    }
 		this.currentEditTaskId = null;
 		this.isModalOpen = true;
 		this.displayModalWindow('add');
@@ -276,6 +279,9 @@ export default class ViewModel {
 	}
 
 	editTask(taskId) {
+		if (this.isModalOpen) {
+      return;
+    }
     this.currentEditTaskId = taskId;
     const task = this.controller.getTask(taskId);
     if (task) {
