@@ -33,9 +33,10 @@ export default class ViewModel {
 		this.modalFooter = document.createElement('div');
 		this.modalCancelButton = document.createElement('button');
 		this.modalSubmitButton = document.createElement('button');
+		this.modalBackdrop = document.createElement('div');
 	}
 
-	// ============ НАСТРОЙКА СЛУШАТЕЛЕЙ ============
+	// ============ LISTENER SETUP ============
 	setupMainListeners(){
 		this.modalOpenButtonAddTask.addEventListener('click', () =>{
 			this.openModalWindow()
@@ -157,15 +158,22 @@ export default class ViewModel {
 		this.modalFooter.append(this.modalSubmitButton);
 
 		if(mode === 'edit' && task){
-			const [title, description = ''] = task.value.split(' | ');
-			this.modalInput.value = title;
-			this.modalTextArea.value = description;
+			this.modalInput.value = task.title;
+      this.modalTextArea.value = task.description;
 		}
+
+		this.modalBackdrop.classList.add('modal__backdrop');
+		this.modalBackdrop.id = 'backdropModal';
+		this.main.append(this.modalBackdrop);
 	}
 
 	// ============ MODAL WINDOW LOGIC ============
 	openModalWindow(){
+		if (this.isModalOpen) {
+      return;
+    }
 		this.currentEditTaskId = null;
+		this.isModalOpen = true;
 		this.displayModalWindow('add');
 	}
 
@@ -178,6 +186,7 @@ export default class ViewModel {
 		this.modalTextArea.value = '';
 		this.isModalOpen = false;
 		this.modalInput.classList.remove('error');
+		this.modalBackdrop.remove();
 		this.modal.remove();
 	}
 
@@ -189,9 +198,9 @@ export default class ViewModel {
         );
 
         if (this.currentEditTaskId !== null) {
-            this.controller.updateTask(this.currentEditTaskId, validatedTask.value);
+            this.controller.updateTask(this.currentEditTaskId, validatedTask.title, validatedTask.description);
         } else {
-            this.controller.createTask(validatedTask.value);   // ← вот здесь было главное упущение
+            this.controller.createTask(validatedTask.title, validatedTask.description);
         }
 
         this.removeModalWindow();
@@ -225,10 +234,18 @@ export default class ViewModel {
 		taskCheckBox.classList.add('task-checkbox');
 		taskCheckBox.type = 'checkbox';
 		taskBlockInfo.append(taskCheckBox);
+
+		taskCheckBox.addEventListener('change', function (){
+			if (this.checked) {
+				taskTitle.classList.add('crossed')
+			} else {
+				taskTitle.classList.remove('crossed');
+			}
+		})
 		
 		taskTitle.classList.add('title-task');
-		const [title, description] = task.value.split(' | ');
-		taskTitle.textContent = title;
+		taskTitle.textContent = task.title;
+
 		taskBlockInfo.append(taskTitle);
 		
 		taskBlockBtn.classList.add('task-btn');
@@ -239,7 +256,7 @@ export default class ViewModel {
 		taskBlockBtn.append(taskEditButton);
 
 		taskEditButton.addEventListener('click', ()=>{
-			this.editTask(task.id)
+			this.editTask(Number(taskItem.dataset.id))
 		})
 		
 		taskEditButtonIcon.classList.add('edit-icon');
@@ -252,7 +269,7 @@ export default class ViewModel {
 		taskBlockBtn.append(taskDeleteButton);
 
 		taskDeleteButton.addEventListener('click', ()=>{
-			this.deleteTask(task.id)
+			this.deleteTask(Number(taskItem.dataset.id))
 		})
 		
 		taskDeleteButtonIcon.classList.add('delete-icon');
@@ -262,9 +279,13 @@ export default class ViewModel {
 	}
 
 	editTask(taskId) {
-    this.currentEditTaskId = Number(taskId);
+		if (this.isModalOpen) {
+      return;
+    }
+    this.currentEditTaskId = taskId;
     const task = this.controller.getTask(taskId);
     if (task) {
+			this.isModalOpen = true;
         this.displayModalWindow('edit', task);
     } else {
         console.error("Task not found for editing");
